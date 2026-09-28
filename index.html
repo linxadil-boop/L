@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MULTIPLAST - Saisie de Production</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="top-bar-controls">
+        <button id="viewToggleBtn" onclick="toggleViewMode()"><i class="fa-solid fa-desktop"></i> Mode PC / Suivi en direct</button>
+    </div>
+
+    <!-- ÉCRAN 1: CONNEXION / LOGIN -->
+    <div id="loginScreen" class="screen active-screen">
+        <div class="login-card">
+            <!-- LOGO SANS IMAGE - JUSTE MULTIPLAST -->
+            <div class="brand-header">
+                <h1 class="brand-title">MULTIPLAST</h1>
+                <p class="brand-subtitle">SYSTEME DE SAISIE DE PRODUCTION</p>
+            </div>
+
+            <div class="divider">
+                <i class="fa-solid fa-industry divider-icon"></i>
+            </div>
+
+            <div class="login-box">
+                <h3 class="login-title">CONNEXION</h3>
+                
+                <label class="input-label">Code Opérateur (PIN)</label>
+                <div class="pin-input-container" onclick="openKeypad('login')">
+                    <div class="pin-icon"><i class="fa-solid fa-user"></i></div>
+                    <input type="password" id="pinInput" class="pin-field" readonly placeholder="Entrez votre PIN">
+                </div>
+
+                <button class="btn-connect" onclick="attemptLogin()">SE CONNECTER</button>
+            </div>
+
+            <p class="access-note">Accès réservé aux opérateurs autorisés</p>
+
+            <!-- Clavier Numérique (Visible au clic sur le champ PIN) -->
+            <div id="numKeypadLogin" class="keypad-container hidden">
+                <div class="keypad-grid">
+                    <button class="key-btn" onclick="typeKeypad('1')">1</button>
+                    <button class="key-btn" onclick="typeKeypad('2')">2</button>
+                    <button class="key-btn" onclick="typeKeypad('3')">3</button>
+                    <button class="key-btn" onclick="typeKeypad('4')">4</button>
+                    <button class="key-btn" onclick="typeKeypad('5')">5</button>
+                    <button class="key-btn" onclick="typeKeypad('6')">6</button>
+                    <button class="key-btn" onclick="typeKeypad('7')">7</button>
+                    <button class="key-btn" onclick="typeKeypad('8')">8</button>
+                    <button class="key-btn" onclick="typeKeypad('9')">9</button>
+                    <button class="key-btn key-action" onclick="typeKeypad('clear')"><i class="fa-solid fa-xmark"></i></button>
+                    <button class="key-btn" onclick="typeKeypad('0')">0</button>
+                    <button class="key-btn key-action" onclick="typeKeypad('backspace')"><i class="fa-solid fa-arrow-left"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ÉCRAN 2: SAISIE DE PRODUCTION (TABLETTE) -->
+    <div id="appScreen" class="screen">
+        <header class="app-header">
+            <button class="back-btn" onclick="logout()"><i class="fa-solid fa-arrow-left"></i></button>
+            <h2>Saisie De Production</h2>
+            <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> DECONNEXION</button>
+        </header>
+
+        <div class="app-content">
+            <!-- CARTE OPERATEUR / DATE / SHIFT -->
+            <div class="info-card">
+                <div class="info-item" onclick="openEditModal('operator')">
+                    <div class="info-icon"><i class="fa-solid fa-user"></i></div>
+                    <div class="info-details">
+                        <span class="info-label">Opérateur</span>
+                        <span class="info-value" id="dispOperatorName">Hassan El Raoui</span>
+                    </div>
+                </div>
+                <div class="info-divider"></div>
+                <div class="info-item">
+                    <div class="info-icon calendar-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                    <div class="info-details">
+                        <span class="info-label">Date</span>
+                        <span class="info-value" id="dispCurrentDate">18/09/2026</span>
+                    </div>
+                </div>
+                <div class="info-divider"></div>
+                <div class="info-item">
+                    <div class="info-icon clock-icon"><i class="fa-regular fa-clock"></i></div>
+                    <div class="info-details">
+                        <span class="info-label">Shift</span>
+                        <select id="shiftSelect" class="shift-dropdown">
+                            <option value="A (06h - 14h)">A (06h - 14h)</option>
+                            <option value="B (14h - 22h)">B (14h - 22h)</option>
+                            <option value="C (22h - 06h)">C (22h - 06h)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="section-title">Informations De Production :</h3>
+
+            <!-- COMPTEURS DÉCHET & SACS -->
+            <div class="counters-grid">
+                <div class="counter-card" onclick="openEditModal('pp')">
+                    <span class="counter-title">Nb de Sac(PP)</span>
+                    <div class="counter-body">
+                        <img src="https://img.icons8.com/color/48/shopping-bag.png" alt="PP" class="cnt-icon">
+                        <span class="counter-val" id="valPP">0</span>
+                    </div>
+                </div>
+
+                <div class="counter-card" onclick="openEditModal('pe')">
+                    <span class="counter-title">Nb de Sac(PE)</span>
+                    <div class="counter-body">
+                        <img src="https://img.icons8.com/color/48/plastic-bag.png" alt="PE" class="cnt-icon">
+                        <span class="counter-val" id="valPE">0</span>
+                    </div>
+                </div>
+
+                <div class="counter-card" onclick="openEditModal('dechet')">
+                    <span class="counter-title">Déchet en Kg</span>
+                    <div class="counter-body">
+                        <i class="fa-solid fa-trash-can cnt-icon trash-icon"></i>
+                        <span class="counter-val" id="valDechet">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLEAU DES ROULEAUX -->
+            <div class="rolls-header">
+                <h3 class="section-title">Detail Du Rouleaux :</h3>
+                <button class="btn-add-roll" onclick="openAddRollModal()"><i class="fa-solid fa-plus"></i> Ajouter un rouleaux</button>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nom Du Produit</th>
+                            <th>Métrage(m)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rollsTableBody">
+                        <!-- Généré dynamiquement -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- CARTE RECAPITULATIF TOTAUX -->
+            <div class="summary-card">
+                <div class="summary-item">
+                    <span class="summary-label">Totale De Rouleaux</span>
+                    <span class="summary-value" id="totalRolls">0</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-item">
+                    <span class="summary-label">Totale De Métrage</span>
+                    <span class="summary-value" id="totalMetrage">0</span>
+                </div>
+            </div>
+
+            <button class="btn-save-prod" onclick="saveProduction()"><i class="fa-solid fa-bookmark"></i> Enregistrée la production</button>
+        </div>
+    </div>
+
+    <!-- ÉCRAN 3: SUIVI ORDINATEUR EN DIRECT (PC) -->
+    <div id="pcScreen" class="screen">
+        <header class="pc-header">
+            <h2><i class="fa-solid fa-desktop"></i> MONITEUR DE PRODUCTION EN DIRECT (PC ADMIN)</h2>
+            <div id="liveBadge" class="badge-live"><i class="fa-solid fa-circle"></i> En Direct Sync</div>
+        </header>
+
+        <div class="pc-content">
+            <div class="pc-dashboard-grid">
+                <div class="pc-stat-card">
+                    <h4>Opérateur Actuel</h4>
+                    <p id="pcOperatorName">Hassan El Raoui</p>
+                </div>
+                <div class="pc-stat-card">
+                    <h4>Nb Sacs (PP)</h4>
+                    <p id="pcPP">0</p>
+                </div>
+                <div class="pc-stat-card">
+                    <h4>Nb Sacs (PE)</h4>
+                    <p id="pcPE">0</p>
+                </div>
+                <div class="pc-stat-card">
+                    <h4>Déchets (Kg)</h4>
+                    <p id="pcDechet">0 Kg</p>
+                </div>
+            </div>
+
+            <h3 class="pc-sub-title">Historique & Rouleaux Saisis sur la Tablette</h3>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Horodatage</th>
+                            <th>Opérateur</th>
+                            <th>Nom Produit</th>
+                            <th>Métrage (m)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pcRollsTableBody">
+                        <!-- Données reçues en direct -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CLAVIER VIRTUEL POUR VALEURS NUMÉRIQUES -->
+    <div id="valueModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <h3 id="modalTitle">Saisie Valeur</h3>
+            <div class="modal-input-display" id="modalInputDisplay">0</div>
+            
+            <div class="keypad-grid modal-keypad">
+                <button class="key-btn" onclick="modalType('1')">1</button>
+                <button class="key-btn" onclick="modalType('2')">2</button>
+                <button class="key-btn" onclick="modalType('3')">3</button>
+                <button class="key-btn" onclick="modalType('4')">4</button>
+                <button class="key-btn" onclick="modalType('5')">5</button>
+                <button class="key-btn" onclick="modalType('6')">6</button>
+                <button class="key-btn" onclick="modalType('7')">7</button>
+                <button class="key-btn" onclick="modalType('8')">8</button>
+                <button class="key-btn" onclick="modalType('9')">9</button>
+                <button class="key-btn key-action" onclick="modalType('clear')">C</button>
+                <button class="key-btn" onclick="modalType('0')">0</button>
+                <button class="key-btn key-action" onclick="modalType('back')"><i class="fa-solid fa-arrow-left"></i></button>
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn btn-cancel" onclick="closeValueModal()">Annuler</button>
+                <button class="modal-btn btn-confirm" onclick="confirmValueModal()">Valider</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CLAVIER AZERTY (SAISIE DE TEXTE ROULEAU & OPÉRATEUR) -->
+    <div id="textModal" class="modal-overlay hidden">
+        <div class="modal-card modal-large">
+            <h3 id="textModalTitle">Saisir le Nom du Produit</h3>
+            <input type="text" id="textInputDisplay" class="modal-text-input" readonly placeholder="Saisir ici...">
+
+            <!-- Clavier AZERTY -->
+            <div class="azerty-keyboard">
+                <div class="azerty-row">
+                    <button class="az-btn" onclick="azertyType('A')">A</button>
+                    <button class="az-btn" onclick="azertyType('Z')">Z</button>
+                    <button class="az-btn" onclick="azertyType('E')">E</button>
+                    <button class="az-btn" onclick="azertyType('R')">R</button>
+                    <button class="az-btn" onclick="azertyType('T')">T</button>
+                    <button class="az-btn" onclick="azertyType('Y')">Y</button>
+                    <button class="az-btn" onclick="azertyType('U')">U</button>
+                    <button class="az-btn" onclick="azertyType('I')">I</button>
+                    <button class="az-btn" onclick="azertyType('O')">O</button>
+                    <button class="az-btn" onclick="azertyType('P')">P</button>
+                </div>
+                <div class="azerty-row">
+                    <button class="az-btn" onclick="azertyType('Q')">Q</button>
+                    <button class="az-btn" onclick="azertyType('S')">S</button>
+                    <button class="az-btn" onclick="azertyType('D')">D</button>
+                    <button class="az-btn" onclick="azertyType('F')">F</button>
+                    <button class="az-btn" onclick="azertyType('G')">G</button>
+                    <button class="az-btn" onclick="azertyType('H')">H</button>
+                    <button class="az-btn" onclick="azertyType('J')">J</button>
+                    <button class="az-btn" onclick="azertyType('K')">K</button>
+                    <button class="az-btn" onclick="azertyType('L')">L</button>
+                    <button class="az-btn" onclick="azertyType('M')">M</button>
+                </div>
+                <div class="azerty-row">
+                    <button class="az-btn" onclick="azertyType('W')">W</button>
+                    <button class="az-btn" onclick="azertyType('X')">X</button>
+                    <button class="az-btn" onclick="azertyType('C')">C</button>
+                    <button class="az-btn" onclick="azertyType('V')">V</button>
+                    <button class="az-btn" onclick="azertyType('B')">B</button>
+                    <button class="az-btn" onclick="azertyType('N')">N</button>
+                    <button class="az-btn" onclick="azertyType('-')">-</button>
+                    <button class="az-btn" onclick="azertyType('/')">/</button>
+                    <button class="az-btn az-wide" onclick="azertyType('back')"><i class="fa-solid fa-arrow-left"></i> Effacer</button>
+                </div>
+                <div class="azerty-row">
+                    <button class="az-btn az-space" onclick="azertyType(' ')">Espace</button>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn btn-cancel" onclick="closeTextModal()">Annuler</button>
+                <button class="modal-btn btn-confirm" onclick="confirmTextModal()">Valider</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

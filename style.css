@@ -1,0 +1,614 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    user-select: none;
+}
+
+body {
+    background-color: #f3f6f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.top-bar-controls {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+#viewToggleBtn {
+    background: #0d47a1;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+.screen {
+    display: none;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.screen.active-screen {
+    display: block;
+}
+
+/* LOGIN SCREEN */
+#loginScreen {
+    background: #f7f9fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-card {
+    background: #fff;
+    width: 100%;
+    max-width: 440px;
+    margin: auto;
+    border-radius: 8px;
+    padding: 25px 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.brand-header {
+    margin-bottom: 15px;
+}
+
+.brand-title {
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #0d233a;
+}
+
+.brand-subtitle {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: #0b4f8c;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.divider {
+    position: relative;
+    border-bottom: 1px solid #dcdcdc;
+    margin: 20px 0;
+}
+
+.divider-icon {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 0 10px;
+    color: #0d47a1;
+}
+
+.login-title {
+    color: #103b66;
+    font-size: 18px;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.input-label {
+    display: block;
+    text-align: left;
+    font-weight: 700;
+    color: #103b66;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.pin-input-container {
+    display: flex;
+    border: 2px solid #0a1f44;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #0a1f44;
+}
+
+.pin-icon {
+    background: #0a1f44;
+    color: #fff;
+    padding: 12px 15px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+
+.pin-field {
+    width: 100%;
+    border: none;
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+    letter-spacing: 5px;
+    outline: none;
+    background: #f0f3f8;
+}
+
+.btn-connect {
+    width: 100%;
+    background: #0066c0;
+    color: white;
+    border: none;
+    padding: 14px;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+}
+
+.access-note {
+    font-size: 11px;
+    color: #777;
+    margin-top: 15px;
+}
+
+/* CLAVIER NUMÉRIQUE TACTILE */
+.keypad-container {
+    margin-top: 15px;
+    background: #eef2f7;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.keypad-container.hidden {
+    display: none;
+}
+
+.keypad-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.key-btn {
+    background: #0066c0;
+    color: white;
+    border: none;
+    padding: 14px 0;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.key-btn:active {
+    background: #004080;
+}
+
+/* APPLICATION DE SAISIE DE PRODUCTION */
+.app-header {
+    background: #0a1f44;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+}
+
+.app-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.back-btn, .logout-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.logout-btn {
+    background: #008000;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.app-content {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+/* CARTE INFO OPERATEUR */
+.info-card {
+    background: #0a1f44;
+    color: white;
+    border-radius: 12px;
+    display: flex;
+    padding: 12px 10px;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.info-icon {
+    background: #1e3a6a;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.calendar-icon { background: #d9534f; }
+.clock-icon { background: #f0ad4e; }
+
+.info-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 11px;
+    color: #a0b2ce;
+    font-weight: bold;
+}
+
+.info-value {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.shift-dropdown {
+    background: transparent;
+    color: white;
+    border: none;
+    font-weight: bold;
+    outline: none;
+}
+
+.shift-dropdown option {
+    background: #0a1f44;
+    color: white;
+}
+
+.info-divider {
+    width: 1px;
+    height: 30px;
+    background: #1e3a6a;
+}
+
+.section-title {
+    font-size: 15px;
+    color: #0a1f44;
+    margin-bottom: 12px;
+    font-weight: bold;
+}
+
+/* GRILLE DE COMPTEURS */
+.counters-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.counter-card {
+    background: white;
+    border: 1px solid #c5d0de;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.counter-title {
+    font-size: 11px;
+    color: #103b66;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.counter-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cnt-icon {
+    width: 28px;
+    height: 28px;
+}
+
+.trash-icon {
+    color: #d9534f;
+    font-size: 24px;
+}
+
+.counter-val {
+    font-size: 18px;
+    font-weight: bold;
+    color: #103b66;
+}
+
+/* SECTION ROULEAUX & TABLEAU */
+.rolls-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.btn-add-roll {
+    background: #0066c0;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 18px;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.table-wrapper {
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.data-table th {
+    background: #0a1f44;
+    color: white;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.data-table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 13px;
+}
+
+.btn-delete {
+    background: #d9534f;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* CARTE RECAPITULATIF TOTAUX */
+.summary-card {
+    background: #dce5ec;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.summary-label {
+    display: block;
+    font-size: 12px;
+    color: #0066c0;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.summary-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0a1f44;
+}
+
+.summary-divider {
+    width: 1px;
+    background: #b0c2d4;
+}
+
+.btn-save-prod {
+    width: 100%;
+    background: #008000;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* PC DISPLAY SCREEN */
+.pc-header {
+    background: #0a1f44;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.badge-live {
+    background: #28a745;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.pc-content {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.pc-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.pc-stat-card {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #0066c0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.pc-stat-card h4 {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.pc-stat-card p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #0a1f44;
+}
+
+.pc-sub-title {
+    margin-bottom: 12px;
+    color: #0a1f44;
+}
+
+/* MODALS & CLAVIERS TACTILES SUR ECRAN */
+.modal-overlay {
+    position: fixed;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-card {
+    background: white;
+    width: 90%;
+    max-width: 380px;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-large {
+    max-width: 600px;
+}
+
+.modal-card h3 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #0a1f44;
+}
+
+.modal-input-display {
+    background: #eef2f7;
+    border: 2px solid #0066c0;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    color: #0a1f44;
+}
+
+.modal-text-input {
+    width: 100%;
+    background: #eef2f7;
+    border: 2px solid #0066c0;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.modal-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-cancel { background: #ccc; color: #333; }
+.btn-confirm { background: #008000; color: white; }
+
+/* CLAVIER AZERTY */
+.azerty-keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.azerty-row {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+}
+
+.az-btn {
+    background: #0066c0;
+    color: white;
+    border: none;
+    padding: 12px 14px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    flex: 1;
+}
+
+.az-wide { flex: 2; background: #d9534f; }
+.az-space { flex: 6; background: #555; }
